@@ -1,0 +1,19 @@
+package models
+
+import (
+	"github.com/rbsilmann/api-estudo/db"
+)
+
+func Delete(id int64) (int64, error) {
+	conn, err := db.OpenConnection()
+	if err != nil {
+		return 0, err
+	}
+	defer conn.Close()
+	sql := `DELETE FROM todos WHERE id=$1`
+	query, err := conn.Exec(sql, id)
+	if err != nil {
+		return 0, err
+	}
+	return query.RowsAffected()
+}
